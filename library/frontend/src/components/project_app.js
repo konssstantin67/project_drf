@@ -13,7 +13,7 @@ const ProjectItem = ({project}) => {
             </td>
             <td>
                 {project.users}
-            </td>
+            </td>            
         </tr>
     )
 }
@@ -26,16 +26,18 @@ const ProjectList = ({ project }) => {
     console.log('project_filter=', project_filter)
     return (
         <table>
-            <th>
-               | Наименование проекта
-            </th>
-            <th>
-               | Ссылкана проект
-            </th>
-            <th>
-               | Пользователи проекта |
-            </th>
-            {project.map((project) => <ProjectItem project={project} />)}
+            <thead>
+                <th>
+                    | Наименование проекта
+                </th>
+                <th>
+                    | Ссылкана проект
+                </th>
+                <th>
+                    | Пользователи проекта |
+                </th>
+                {project.map((project) => <ProjectItem project={project} />)}
+            </thead>
         </table>
     )
 }

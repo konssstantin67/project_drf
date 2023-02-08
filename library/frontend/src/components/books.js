@@ -18,13 +18,15 @@ const BooksList = ({ book }) => {
     console.log(book)
     return (
         <table>
-            <th>
-               | Название книги
-            </th>
-            <th>
-               | Имя Автора
-            </th>
-            {book.map((book) => <BooksItem book={book} />)}
+            <thead>
+                <th>
+                | Название книги
+                </th>
+                <th>
+                | Имя Автора
+                </th>
+                {book.map((book) => <BooksItem book={book} />)}
+            </thead>
         </table>
     )
 }

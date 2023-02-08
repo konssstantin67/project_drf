@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
-from authors.views import AuthorModelViewSet, BookViewSet
+from authors.views import AuthorModelViewSet
+from books.views import BookViewSet
 from users.views import UserModelViewSet, UsersCustomViewSet
 from project_app.views import ProjectModelViewSet, TODOModelViewSet
 

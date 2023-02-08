@@ -27,22 +27,25 @@ const TodoList = ({ todo }) => {
     console.log(todo)
     return (
         <table>
-            <th>
-               | Текст заметки
-            </th>
-            <th>
-               | Проект
-            </th>
-            <th>
-               | Пользователи заметки
-            </th>
-            <th>
-               | Дата обновления заметки
-            </th>
-            <th>
-               | Активность заметки |
-            </th>
-            {todo.map((todo) => <TodoItem todo={todo} />)}
+            <thead>
+                <th>
+                | Текст заметки
+                </th>
+                <th>
+                | Проект
+                </th>
+                <th>
+                | Пользователи заметки
+                </th>
+                <th>
+                | Дата обновления заметки
+                </th>
+                <th>
+                | Активность заметки |
+                </th>
+                {todo.map((todo) => <TodoItem todo={todo} />)}
+            </thead>
+            
         </table>
     )
 }

@@ -26,22 +26,25 @@ const UserItem = ({ user }) => {
 const UserList = ({users}) => {
     return (
         <table>
-            <th>
-               | id Пользователя
-            </th>
-            <th>
-               | Имя Пользователя
-            </th>
-            <th>
-               | Фамилия Пользователя
-            </th>
-            <th>
-               | ДР Пользователя
-            </th>
-            <th>
-               | email Пользователя |
-            </th>
-            {users.map((user) => <UserItem user={user} />)}
+            <thead>
+                <th>
+                | id Пользователя
+                </th>
+                <th>
+                | Имя Пользователя
+                </th>
+                <th>
+                | Фамилия Пользователя
+                </th>
+                <th>
+                | ДР Пользователя
+                </th>
+                <th>
+                | email Пользователя |
+                </th>
+                {users.map((user) => <UserItem user={user} />)} 
+            </thead>
+           
         </table>
     )
 }

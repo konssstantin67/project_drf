@@ -4,6 +4,7 @@ import React from 'react';
 import axios from 'axios';
 import AuthorList from './components/Author';
 import AuthorItem from './components/Author';
+import BooksList from './components/books';
 import UserList from './components/users';
 import ProjectList from './components/project_app';
 import ProjectItem from "./components/project_app";
@@ -102,10 +103,10 @@ class App extends React.Component {
             </Route>
               {<Route exact path='/users' element={<UserList users={this.state.users}/>}/>} 
               <Route index element={<AuthorList author={this.state.authors}/>}/>
-            <Route path='/author' element={<AuthorItem author={this.state.authors} />} />
+            <Route path='/authors' element={<AuthorItem author={this.state.authors} />} />
             <Route exact path='/todo' element={<TodoList todo={this.state.todo}/>}/>
             <Route path='*' element={<NotFound404 />} />
-            <Route exact path='/books' element={<booksList book={this.state.book}/>}/>
+            <Route exact path='/books' element={<BooksList book={this.state.books}/>}/>
           </Routes>
         </BrowserRouter>
        </div>

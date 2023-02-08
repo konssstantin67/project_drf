@@ -24,19 +24,22 @@ const AuthorItem = ({author}) => {
 const AuthorList = ({ author }) => {
     return (
         <table>
-            <th>
+            <thead>
+                <th>
                | id автора
-            </th>
-            <th>
-               | Имя автора
-            </th>
-            <th>
-               | Фамилимя автора
-            </th>
-            <th>
-               | год рождения автора |
-            </th>
-            {author.map((author) => (<AuthorItem author={author} />))}
+                </th>
+                <th>
+                | Имя автора
+                </th>
+                <th>
+                | Фамилимя автора
+                </th>
+                <th>
+                | год рождения автора |
+                </th>
+                    {author.map((author) => (<AuthorItem author={author} />))}
+            </thead>
+            
         </table>
     )
 }
