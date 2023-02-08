@@ -21,6 +21,7 @@ from authors.views import AuthorModelViewSet
 from books.views import BookViewSet
 from users.views import UserModelViewSet, UsersCustomViewSet
 from project_app.views import ProjectModelViewSet, TODOModelViewSet
+from menu.views import MenuViewSet
 
 router = DefaultRouter()
 router.register('users', UsersCustomViewSet, UserModelViewSet)
@@ -28,6 +29,7 @@ router.register('authors', AuthorModelViewSet)
 router.register('todo', TODOModelViewSet)
 router.register('project', ProjectModelViewSet)
 router.register('books', BookViewSet)
+router.register('menu', MenuViewSet)
 
 
 urlpatterns = [

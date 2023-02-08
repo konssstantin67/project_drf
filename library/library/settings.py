@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'project_app',
     'books',
+    'menu',
 ]
 
 MIDDLEWARE = [
