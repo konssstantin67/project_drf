@@ -2,7 +2,7 @@ from django.db import models
 from uuid import uuid4
 from authors.models import Author
 
-DEFAULT = 'abc'
+DEFAULT = models.UUIDField(default=None)
 
 
 class Book(models.Model):
@@ -12,4 +12,4 @@ class Book(models.Model):
         Author, default=DEFAULT, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return '{self.id} {self.name} {self.authors}'.format(self=self)

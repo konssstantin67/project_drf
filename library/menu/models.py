@@ -3,8 +3,9 @@ from authors.models import Author
 from users.models import User
 from books.models import Book
 from project_app.models import Project, TODO
+from uuid import uuid4
 
-DEFAULT = "abc"
+DEFAULT = models.UUIDField(default=uuid4)
 
 
 class Menu(models.Model):
