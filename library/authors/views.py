@@ -15,3 +15,6 @@ class AuthorModelViewSet(ModelViewSet):
     serializer_class = AuthorModelSerializer
     pagination_class = AuthorLimitOffsetPagination
     filterset_class = AuthorFilter
+
+    def __str__(self):
+        return self.name

@@ -9,5 +9,5 @@ class AuthorFilter(filters.FilterSet):
         model = Author
         fields = ['first_name',
                   'last_name',
-                  'birthday_year'
+                  'birthday_year',
                   ]
