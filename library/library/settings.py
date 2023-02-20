@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'project_app',
     'books',
     'drf_yasg',
+    "graphene_django",
 ]
 
 MIDDLEWARE = [
@@ -150,4 +151,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
+}
+
+GRAPHENE = {
+    "SCHEMA": "library.schema.schema"
 }
