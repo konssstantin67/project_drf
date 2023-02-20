@@ -1,5 +1,4 @@
 from uuid import uuid4
-
 from django.db import models
 
 
@@ -10,4 +9,4 @@ class Author(models.Model):
     birthday_year = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.first_name
+        return '{self.first_name} {self.last_name}'.format(self=self)

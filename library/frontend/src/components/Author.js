@@ -44,7 +44,4 @@ const AuthorList = ({ author }) => {
     )
 }
 
-
-
-
 export default AuthorList

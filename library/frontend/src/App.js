@@ -3,14 +3,15 @@ import React from 'react';
  */import './App.css';
 import axios from 'axios';
 import AuthorList from './components/Author';
-import AuthorItem from './components/Author';
 import BooksList from './components/books';
 import UserList from './components/users';
 import ProjectList from './components/project_app';
-import ProjectItem from "./components/project_app";
 import TodoList from './components/todo';
-import {BrowserRouter, Link, Navigate, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 import NotFound404 from "./components/NotFound404";
+import LoginForm from './components/Auth.js'
+import Cookies from 'universal-cookie';
+
 
 
 
@@ -22,49 +23,94 @@ class App extends React.Component {
       'users': [],
       'project': [],
       'todo': [],
-      'books':[],
+      'books': [],
     }
   }
-  componentDidMount() {
-        axios.get('http://127.0.0.1:8000/api/todo/')
-      .then(response => {
-        const todo = response.data.results
-        this.setState(
-          {
-            'todo': todo,
-          }
-        )
-      }).catch(error => console.log(error))
-    axios.get('http://127.0.0.1:8000/api/project/')
-      .then(response => {
-        const project = response.data.results
-        this.setState(
-          {
-            'project': project,
-          }
-        )
-      }).catch(error => console.log(error))
-    axios.get('http://127.0.0.1:8000/api/users')
-      .then(response => {
-        const users = response.data.results
-          this.setState(
-          {
-          'users': users,
-          }
-        )
-      }).catch(error => console.log(error))
-    axios.get('http://127.0.0.1:8000/api/authors')
+
+  set_token(token) {
+    const cookies = new Cookies()
+    cookies.set('token', token)
+    this.setState({ 'token': token }, () => this.load_data())
+  }
+  
+  is_authenticated() {
+    // eslint-disable-next-line eqeqeq
+    return this.state.token != ''
+  }
+
+  logout() {
+    this.set_token('')
+  }
+  
+  get_token_from_storage() {
+    const cookies = new Cookies()
+    const token = cookies.get('token')
+    this.setState({ 'token': token }, () => this.load_data())
+  }
+  
+  get_token(username, password) {
+    axios.post('http://127.0.0.1:8000/api-token-auth/', {
+      username: username,
+      password: password,
+    }).then(response => {
+      console.log(response.data)
+      this.set_token(response.data['token'])
+    }).catch(error => alert('Скидыщ!!! Неверный логин или пароль'))
+  }
+  
+  get_headers() {
+    let headers = {
+      'Content-Type': 'application/json'
+    }
+    if (this.is_authenticated()) {
+      headers['Authorization'] = 'Token ' + this.state.token
+    }
+    return headers
+  }
+  
+  load_data() {
+    const headers = this.get_headers()
+
+    axios.get('http://127.0.0.1:8000/api/authors', { headers })
       .then(response => {
         const author = response.data.results
-        this.setState(
-          {
-            'authors': author,
-          }
+        this.setState({
+          'authors': author
+        }
+        )
+      }
+      ).catch(error => console.log(error))
+    axios.get('http://127.0.0.1:8000/api/todo')
+      .then(response => {
+        const todo = response.data.results
+        this.setState({
+          'todo': todo,
+        }
+        )
+      }
+      ).catch(error => console.log(error))
+    axios.get('http://127.0.0.1:8000/api/users', { headers })
+      .then(response => {
+        const users = response.data['results']
+        this.setState({
+          'users': users,
+        }
+        )
+      }
+      ).catch(error => console.log(error))
+    this.setState({ users: [] })
+    axios.get('http://127.0.0.1:8000/api/project')
+      .then(response => {
+        const project = response.data['results']
+        this.setState({
+          'project': project,
+        }
         )
       }).catch(error => console.log(error))
+    console.log('Это this' + this);
     axios.get('http://127.0.0.1:8000/api/books')
       .then(response => {
-        const book = response.data.results
+        const book = response.data['results']
         this.setState(
           {
             'books': book,
@@ -73,43 +119,59 @@ class App extends React.Component {
       }).catch(error => console.log(error))
   }
 
-  render() {
-    return (
-      <div className="App">
-        <BrowserRouter>
-          <nav>
-            <li>
-              <Link to='/users'>Пользователи</Link>
-            </li>
-            <li>
-              <Link to='/authors'>Авторы</Link>
-            </li>
-            <li>
-              <Link to='/project'>Project_ap</Link>
-            </li>
-            <li>
-              <Link to='/todo'>Заметки</Link>
-            </li>
-             <li>
-              <Link to='/books'>Книги</Link>
-            </li>
-          </nav>
 
+  componentDidMount() {
+    this.get_token_from_storage()
+    // this.load_data()
+  }
+
+  render() {
+
+    return (
+
+      <div className="App">
+        <BrowserRouter>        
+          <nav>
+            <ul>
+              <li>
+                <Link to='/users'>Пользователи</Link>
+              </li>
+              <li>
+                <Link to='/authors'>Авторы</Link>
+              </li>
+              <li>
+                <Link to='/project'>Проект</Link>
+              </li>
+              <li>
+                <Link to='/todo'>Заметки</Link>
+              </li>
+              <li>
+                <Link to='/books'>Книги</Link>
+              </li>
+              <li>
+                {this.is_authenticated() ? <button onClick={() => this.logout()}>Вход</button>
+                  : <Link to='/login'>Login</Link>}
+              </li>
+            </ul>
+          </nav>
           <Routes>
-            <Route exact path='/' element={<Navigate  to='/project' />} />
-            <Route path='/project'>
-                <Route index element={<ProjectList project={this.state.project}/>}/>
-                <Route path=':projectname' element={<ProjectItem project={this.state.project}/>}/>
+            <Route path='/authors' element={<AuthorList author={this.state.authors} />}></Route>
+            <Route path='todo' element={<TodoList todo={this.state.todo} />}></Route>
+            <Route path='users' element={<UserList users={this.state.users} />}></Route>
+            <Route path='project' element={<ProjectList project={this.state.project} />}>
             </Route>
-              {<Route exact path='/users' element={<UserList users={this.state.users}/>}/>} 
-              <Route index element={<AuthorList author={this.state.authors}/>}/>
-            <Route path='/authors' element={<AuthorItem author={this.state.authors} />} />
-            <Route exact path='/todo' element={<TodoList todo={this.state.todo}/>}/>
+             <Route path='/books' element={<BooksList book={this.state.books} />} />
+            <Route path='login' element={
+              this.is_authenticated()
+                ? <Link to='/'></Link>
+
+                : <LoginForm
+                  get_token={(username, password) => this.get_token(username, password)} />}>
+            </Route>
             <Route path='*' element={<NotFound404 />} />
-            <Route exact path='/books' element={<BooksList book={this.state.books}/>}/>
           </Routes>
         </BrowserRouter>
-       </div>
+      </div>
     )
   }
 }
