@@ -11,7 +11,6 @@ import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 import NotFound404 from "./components/NotFound404";
 import LoginForm from './components/Auth.js'
 import Cookies from 'universal-cookie';
-import Menu from './components/menu';
 
 
 
@@ -25,7 +24,6 @@ class App extends React.Component {
       'project': [],
       'todo': [],
       'books': [],
-      'menu': [],
     }
   }
 
@@ -73,15 +71,6 @@ class App extends React.Component {
   load_data() {
     const headers = this.get_headers()
 
-    axios.get('http://127.0.0.1:8000/api/menu', { headers })
-      .then(response => {
-        const menu = response.data.results
-        this.setState({
-          'menu': menu
-        }
-        )
-      }
-      ).catch(error => console.log(error))
     axios.get('http://127.0.0.1:8000/api/authors', { headers })
       .then(response => {
         const author = response.data.results
@@ -141,10 +130,7 @@ class App extends React.Component {
     return (
 
       <div className="App">
-        <Menu menu={this.state.menu}/>
-        <BrowserRouter>
-          <Menu menu={this.state.menu}/>
-        
+        <BrowserRouter>        
           <nav>
             <ul>
               <li>
@@ -163,16 +149,12 @@ class App extends React.Component {
                 <Link to='/books'>Книги</Link>
               </li>
               <li>
-                <Link to='/menu'>Меню</Link>
-              </li>
-              <li>
                 {this.is_authenticated() ? <button onClick={() => this.logout()}>Вход</button>
                   : <Link to='/login'>Login</Link>}
               </li>
             </ul>
           </nav>
           <Routes>
-            <Route path='/' element={<Menu menu={this.state.menu} />}></Route>
             <Route path='/authors' element={<AuthorList author={this.state.authors} />}></Route>
             <Route path='todo' element={<TodoList todo={this.state.todo} />}></Route>
             <Route path='users' element={<UserList users={this.state.users} />}></Route>
